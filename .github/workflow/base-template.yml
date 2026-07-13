@@ -1,5 +1,5 @@
-name:
-run-name:
+name: test
+run-name: testing
 
 on:
   push:
@@ -31,8 +31,7 @@ jobs:
           snyk auth "$SNYK_TOKEN"
 
       - name: Scan Project for Automated Failing
-        run: snyk test --severity-threshold=<low|medium|high|critical> --fail-on=<all|upgradable|patchable> --fail-fast
-          --all-projects --exclude= #File/Directory name: Do not enter a path
+        run: snyk test --severity-threshold=high --fail-on=upgradable --fail-fast --all-projects
           # --reachability=<true|false> # Reachability means a bad actor can reasonably exploit this
           #  --reachability-filter=<reachable|no-info|not-applicable>
 

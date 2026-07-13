@@ -16,22 +16,21 @@ jobs:
 
     steps:
       - name: Checkout the Code for scanning
-        uses: actions/checkout@<v3 or v4>
+        uses: actions/checkout@v2
 
       - name: Prepare Node.js to install Snyk
-        uses: actions/setup-node
+        uses: actions/setup-node@v2
         with:
-          node-version:
-
+        
       - name: Install and Authorize Snyk
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
-          npm install snyk -g
+          npm install -g snyk
           snyk auth "$SNYK_TOKEN"
 
       - name: Scan Project for Automated Failing
-        run: snyk test --severity-threshold=high --fail-on=upgradable --fail-fast --all-projects
+        run: snyk test #--severity-threshold=high --fail-on=upgradable --fail-fast --all-projects
           # --reachability=<true|false> # Reachability means a bad actor can reasonably exploit this
           #  --reachability-filter=<reachable|no-info|not-applicable>
 
@@ -45,10 +44,6 @@ jobs:
           sarif_file: snyk-oss.sarif
 
 
-
-      - name: 
-
-
       - name: Upload scan to Snyk UI # Keeps the project in the Snyk UI up-to-date
-        run: snyk monitor --all-projects --fail-fast
+        run: snyk monitor #--all-projects --fail-fast
 

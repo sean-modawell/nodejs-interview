@@ -1,0 +1,55 @@
+name:
+run-name:
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+
+jobs:
+  build:
+    name: Test and build
+    environment: snyk-npm # create an environment under `actions` in GitHub and enter the name here
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the Code for scanning
+        uses: actions/checkout@<v3 or v4>
+
+      - name: Prepare Node.js to install Snyk
+        uses: actions/setup-node
+        with:
+          node-version:
+
+      - name: Install and Authorize Snyk
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: |
+          npm install snyk -g
+          snyk auth "$SNYK_TOKEN"
+
+      - name: Scan Project for Automated Failing
+        run: snyk test --severity-threshold=<low|medium|high|critical> --fail-on=<all|upgradable|patchable> --fail-fast
+          --all-projects --exclude= #File/Directory name: Do not enter a path
+          # --reachability=<true|false> # Reachability means a bad actor can reasonably exploit this
+          #  --reachability-filter=<reachable|no-info|not-applicable>
+
+
+      - name: Snyk Open Source scanning
+        run: snyk test --sarif-file-output=snyk-oss.sarif # Use this if you intend to upload results directly to GitHub
+        continue-on-error: true
+      - name: Push results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: snyk-oss.sarif
+
+
+
+      - name: 
+
+
+      - name: Upload scan to Snyk UI # Keeps the project in the Snyk UI up-to-date
+        run: snyk monitor --all-projects --fail-fast
+

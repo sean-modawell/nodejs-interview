@@ -1,7 +1,7 @@
 name: Example workflow using Snyk
 on: 
-  push
-  pull_request
+  - push
+  - pull_request
 jobs:
   security:
     runs-on: ubuntu-latest
@@ -18,3 +18,10 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: snyk.sarif
+
+      - name: Upload SARIF as artifact
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: snyk-sarif-report
+          path: snyk.sarif

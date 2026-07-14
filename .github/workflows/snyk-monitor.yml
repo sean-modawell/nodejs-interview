@@ -1,13 +1,13 @@
-name: Example workflow using Snyk
+name: Update Snyk-UI Project
 on:
-  - push
-  - pull_request
+  push:
+    branches: [main]
 jobs:
   security:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Run Snyk to check for vulnerabilities
+      - name: Upload dependancy tree to Snyk-UI
         uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -16,9 +16,11 @@ jobs:
           args: |
             --all-projects
             --fail-fast
+            --debug
 # other args:
             # --reachability=<true|false>
             # --exclude=<NAME>[,<NAME>]...>
             # --prune-repeated-subdependencies
             # --project-name=<PROJECT_NAME>
             # --ignore-policy
+            # --trust-policy

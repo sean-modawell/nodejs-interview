@@ -1,0 +1,33 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities
+version: v1.25.0
+
+# This is a template file. Place in ROOT directory
+
+# Set the Language Version for Python
+language-settings:
+    python: "<version>"
+
+# Ignore a specific vulnerability
+ignore:
+    SNYK-JS-BSON-561052:                            # Example
+        - mongodb > mongodb-core > bson:
+            reason: None given
+            expires: '2020-06-19T20:36:54.553Z'
+    
+    snyk-vulnid:
+        - path to library using > separator:        # Use '*' for all paths, including single quotes
+            reason: 'text string'
+            expires: 'YYYY-MM-DDThh:mm:ss.fffZ'     # OPTIONAL FIELD
+
+# patches apply the minimum changes required to fix a vulnerability
+# supports npm and Yarn only
+patch:
+    'npm:hawk:20160119':                            # Example
+        - tap > codecov.io > request > hawk:
+            patched: '2020-01-20T14:26:34.404Z'
+    
+    'npm:library:yyyymmdd’:
+        - path to library using > separator:
+            patched: 'datetime string'
+        - path to library using > separator > to > another > path:
+            patched: 'YYYY-MM-DDThh:mm:ss.fffZ'

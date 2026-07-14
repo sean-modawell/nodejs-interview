@@ -1,7 +1,7 @@
 name: Example workflow using Snyk
 on:
-  - push
-  - pull_request
+  push:
+  pull_request:
 jobs:
   security:
     runs-on: ubuntu-latest
@@ -23,3 +23,5 @@ jobs:
             --prune-repeated-subdependencies
             --json-file-output=<OUTPUT_FILE_PATH>
             
+# --fail-fast vs --debug
+# fail-fast provides 

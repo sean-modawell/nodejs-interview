@@ -1,7 +1,7 @@
 name: Snyk example 
 on:
-  - push
-  - pull_request
+  push:
+  pull_request:
 jobs:
   security:
     runs-on: ubuntu-latest

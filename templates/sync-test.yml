@@ -1,0 +1,25 @@
+name: Example workflow using Snyk
+on:
+  push
+  pull_request
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: |
+            --all-projects
+            --fail-fast
+            --reachability=<true|false>
+            --reachability-filter=<reachable|no-info|not-applicable>
+            --severity-threshold=<low|medium|high|critical>
+            --exclude=<file-name/no-dir-paths>
+            --fail-on=<all|upgradable|patchable>
+            --prune-repeated-subdependencies
+            --json-file-output=<OUTPUT_FILE_PATH>
+            

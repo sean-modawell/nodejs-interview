@@ -1,0 +1,17 @@
+name: Snyk example 
+on:
+  push
+  pull_request
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master # Grabs your code for testing
+    - uses: snyk/actions/setup@master # Installs Snyk CLI
+    - uses: actions/setup-<language>@<variant> # GitHub action to building and testing code for other languages See here for GiHub Docs: https://docs.github.com/en/actions/tutorials/create-an-example-workflow
+      with:
+        <language>-version: "1.13"
+    - name: Snyk monitor
+      run: snyk test
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}

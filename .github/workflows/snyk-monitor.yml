@@ -1,0 +1,30 @@
+name: Update Snyk-UI Project
+on:
+  push:
+    branches:
+      - main
+      - development
+      - 'feature/**'
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Upload dependancy tree to Snyk-UI
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: monitor # Default command is `test`
+          args: |
+            --all-projects
+            --fail-fast
+            --debug
+# other args:
+            # --reachability=<true|false>                           # Is the vunerable class, function, module called? In Early Access
+            # --exclude=<NAME>[,<NAME>]...>                         # Directory/file names to exclude
+            # --prune-repeated-subdependencies=<true/false>         # Captures all vunerabilities, but not all paths
+            # --project-name=<PROJECT_NAME>                         # Defaults to package name
+            # --target-reference="$(git branch --show-current)"     # Best to use if you want to track multiple branches
+            # --file=<FILE>                                         # Specify the manifest package file (use if name is NOT requirements.txt, package.json, etc)
+            # --package-manager=<PACKAGE_MANAGER_NAME>              # MUST specify with non standard file option. `snyk monitor --file=req.txt --package-manager=pip`

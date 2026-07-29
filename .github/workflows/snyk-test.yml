@@ -1,0 +1,28 @@
+name: Snyk-Testing
+on:
+  push:
+  pull_request:
+jobs:
+  snyk-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: |
+            --all-projects
+            --fail-fast
+            --fail-on=all
+            --debug
+
+# Other args:
+          # --reachability=<true|false>                           # Is the vunerable class, function, module called? In Early Access
+          # --severity-threshold=<low|medium|high|critical>       # Only fails issue is <level> or higher
+          # --prune-repeated-subdependencies=<true/false>         # Trims additional paths for dependencies
+          # --target-reference="$(git branch --show-current)"     # Applies ignores and security policies for a monitored target
+          # --fail-on=<all|upgradable|patchable>                  # Without, scan fails if any vunerability is found & not ignored
+          # --file=<FILE>                                         # Specify the manifest package file (use if name is NOT requirements.txt, package.json, etc)
+          # --package-manager=<PACKAGE_MANAGER_NAME>              # MUST specify with non standard file option. `snyk monitor --file=req.txt --package-manager=pip`
